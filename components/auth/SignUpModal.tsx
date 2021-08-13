@@ -13,6 +13,8 @@ import { dayList, monthList, yearList } from '../../lib/staticData';
 import Button from '../common/Button';
 import { signUpAPI } from '../../lib/api/auth';
 import { AxiosError, AxiosResponse } from 'axios';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../../store/user';
 
 const Container = styled.form`
   width: 568px;
@@ -75,6 +77,7 @@ const Container = styled.form`
 `;
 
 function SignUpModal() {
+  const dispatch = useDispatch();
   const [email, setEamil] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -84,6 +87,7 @@ function SignUpModal() {
   const [birthYear, setBirthYear] = useState<string | undefined>();
   const [birthMonth, setBirthMonth] = useState<string | undefined>();
   const [birthDay, setBirthDay] = useState<string | undefined>();
+  const [validateMode, setValidateMode] = useState<boolean>(false);
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEamil(e.target.value);
@@ -117,8 +121,14 @@ function SignUpModal() {
     setBirthDay(e.target.value);
   };
 
-  const onSubmitSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmitSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setValidateMode(true);
+
+    if (!email || !lastName || !firstName || !password) {
+      return false;
+    }
 
     try {
       const signUpBody = {
@@ -130,7 +140,8 @@ function SignUpModal() {
           `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
         ).toISOString(),
       };
-      signUpAPI(signUpBody);
+      const { data } = await signUpAPI(signUpBody);
+      dispatch(userActions.setLoggedUser(data));
     } catch (e) {
       console.log(e);
     }
@@ -146,6 +157,10 @@ function SignUpModal() {
           value={email}
           onChange={onChangeEmail}
           icon={<MailIcon />}
+          validateMode={validateMode}
+          useValidation
+          isValid={!!email}
+          errorMessage="이메일이 필요합니다."
         />
       </div>
       <div className="input-wrapper">
@@ -154,6 +169,10 @@ function SignUpModal() {
           value={lastName}
           onChange={onChangeLastName}
           icon={<PersonIcon />}
+          validateMode={validateMode}
+          useValidation
+          isValid={!!lastName}
+          errorMessage="이름을 입력하세요."
         />
       </div>
       <div className="input-wrapper">
@@ -162,6 +181,10 @@ function SignUpModal() {
           value={firstName}
           onChange={onChangeFirstName}
           icon={<PersonIcon />}
+          validateMode={validateMode}
+          useValidation
+          isValid={!!firstName}
+          errorMessage="성을 입력하세요."
         />
       </div>
       <div className="input-wrapper sign-up-password-input-wrapper">
@@ -177,6 +200,10 @@ function SignUpModal() {
               <OpenedEyeIcon onClick={toggleHidePassword} />
             )
           }
+          validateMode={validateMode}
+          useValidation
+          isValid={!!password}
+          errorMessage="비밀번호를 입력하세요"
         />
       </div>
       <p className="sign-up-birthdat-label">생일</p>
