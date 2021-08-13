@@ -11,7 +11,7 @@ const getList = () => {
   return users;
 };
 
-const exist = ({ email }: { email: string }) => {
+const exist = (email: string) => {
   const users = getList();
   return users.some(user => user.email === email);
 };

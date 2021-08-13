@@ -11,12 +11,16 @@ import ClosedEyeIcon from '../../public/static/svg/auth/closed_eye.svg';
 import Selector from '../common/Selector';
 import { dayList, monthList, yearList } from '../../lib/staticData';
 import Button from '../common/Button';
+import { signUpAPI } from '../../lib/api/auth';
+import { AxiosError, AxiosResponse } from 'axios';
 
-const Container = styled.div`
+const Container = styled.form`
   width: 568px;
   padding: 32px;
   background-color: white;
   z-index: 11;
+  user-select: none;
+  -webkit-user-select: none;
 
   .modal-close-x-icon {
     cursor: pointer;
@@ -108,12 +112,32 @@ function SignUpModal() {
   const onChangeBirthMonth = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBirthMonth(e.target.value);
   };
+
   const onChangeBirthDay = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setBirthDay(e.target.value);
   };
 
+  const onSubmitSignUp = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const signUpBody = {
+        email,
+        lastName,
+        firstName,
+        password,
+        birthday: new Date(
+          `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
+        ).toISOString(),
+      };
+      signUpAPI(signUpBody);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
-    <Container>
+    <Container onSubmit={onSubmitSignUp}>
       <CloseXIcon className="modal-close-x-icon" />
       <div className="input-wrapper">
         <Input
