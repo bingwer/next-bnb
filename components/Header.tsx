@@ -59,7 +59,7 @@ const Container = styled.div`
 `;
 
 function Header() {
-  const { openModal, ModalPortal } = useModal();
+  const { openModal, ModalPortal, closeModal } = useModal();
 
   return (
     <Container>
@@ -82,7 +82,7 @@ function Header() {
         </button>
       </div>
       <ModalPortal>
-        <SignUpModal />
+        <SignUpModal closeModal={closeModal} />
       </ModalPortal>
     </Container>
   );

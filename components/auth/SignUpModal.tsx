@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Input from '../common/Input';
 import palette from '../../styles/palette';
@@ -76,11 +76,21 @@ const Container = styled.form`
     padding-bottom: 16px;
     border-bottom: 1px solid ${palette.gray_eb};
   }
+
+  .sign-up-modal-set-login {
+    color: ${palette.dark_cyan};
+    margin-left: 8px;
+    cursor: pointer;
+  }
 `;
 
 const PASSWORD_MIN_LENGTH = 8;
 
-function SignUpModal() {
+interface SignUpModalType {
+  closeModal: () => void;
+}
+
+function SignUpModal({ closeModal }: SignUpModalType) {
   const dispatch = useDispatch();
   const { setValidateMode } = useValidateMode();
   const [email, setEamil] = useState<string>('');
@@ -195,15 +205,22 @@ function SignUpModal() {
         };
         const { data } = await signUpAPI(signUpBody);
         dispatch(userActions.setLoggedUser(data));
+        closeModal();
       } catch (e) {
         console.log(e);
       }
     }
   };
 
+  useEffect(() => {
+    return () => {
+      setValidateMode(false);
+    };
+  }, []);
+
   return (
     <Container onSubmit={onSubmitSignUp}>
-      <CloseXIcon className="modal-close-x-icon" />
+      <CloseXIcon className="modal-close-x-icon" onClick={closeModal} />
       <div className="input-wrapper">
         <Input
           placeholder="이메일 주소"
@@ -314,6 +331,16 @@ function SignUpModal() {
       <div className="sign-up-modal-submit-button-wrapper">
         <Button type="submit">가입하기</Button>
       </div>
+      <p>
+        이미 에어비앤비 계정이 있나요?
+        <span
+          className="sign-up-modal-set-login"
+          role="presentation"
+          onClick={() => {}}
+        >
+          로그인
+        </span>
+      </p>
     </Container>
   );
 }
