@@ -153,6 +153,26 @@ function SignUpModal() {
     [password],
   );
 
+  const validateSignUpForm = () => {
+    if (!email || !lastName || !firstName || !password) {
+      return false;
+    }
+
+    if (
+      !isPasswordHasNameOrEmail ||
+      !isPasswordOverMinLength ||
+      isPasswordHasNumberOrSymbol
+    ) {
+      return false;
+    }
+
+    if (!birthDay || !birthMonth || !birthYear) {
+      return false;
+    }
+
+    return true;
+  };
+
   const onSubmitSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -162,20 +182,22 @@ function SignUpModal() {
       return false;
     }
 
-    try {
-      const signUpBody = {
-        email,
-        lastName,
-        firstName,
-        password,
-        birthday: new Date(
-          `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
-        ).toISOString(),
-      };
-      const { data } = await signUpAPI(signUpBody);
-      dispatch(userActions.setLoggedUser(data));
-    } catch (e) {
-      console.log(e);
+    if (validateSignUpForm()) {
+      try {
+        const signUpBody = {
+          email,
+          lastName,
+          firstName,
+          password,
+          birthday: new Date(
+            `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
+          ).toISOString(),
+        };
+        const { data } = await signUpAPI(signUpBody);
+        dispatch(userActions.setLoggedUser(data));
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
