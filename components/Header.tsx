@@ -5,10 +5,11 @@ import AirbnbLogoIcon from '../public/static/svg/logo/logo.svg';
 import AirbnbLogoText from '../public/static/svg/logo/logo_text.svg';
 import HamburgerIcon from '../public/static/svg/header/hamgurgerIcon.svg';
 import palette from '../styles/palette';
-import SignUpModal from './auth/SignUpModal';
 import useModal from '../hooks/useModal';
 import { useSelector } from '../store';
+import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth';
+import AuthModal from './auth/AuthModal';
 
 const Container = styled.div`
   position: sticky;
@@ -84,6 +85,7 @@ const Container = styled.div`
 `;
 
 function Header() {
+  const dispatch = useDispatch();
   const { openModal, ModalPortal, closeModal } = useModal();
   const user = useSelector(state => state.user);
 
@@ -130,7 +132,7 @@ function Header() {
         </button>
       )}
       <ModalPortal>
-        <SignUpModal closeModal={closeModal} />
+        <AuthModal closeModal={closeModal} />
       </ModalPortal>
     </Container>
   );
