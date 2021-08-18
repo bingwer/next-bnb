@@ -12,9 +12,9 @@ import Selector from '../common/Selector';
 import { dayList, monthList, yearList } from '../../lib/staticData';
 import Button from '../common/Button';
 import { signUpAPI } from '../../lib/api/auth';
-import { AxiosError, AxiosResponse } from 'axios';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../store/user';
+import { commonActions } from '../../store/common';
 
 const Container = styled.form`
   width: 568px;
@@ -87,7 +87,6 @@ function SignUpModal() {
   const [birthYear, setBirthYear] = useState<string | undefined>();
   const [birthMonth, setBirthMonth] = useState<string | undefined>();
   const [birthDay, setBirthDay] = useState<string | undefined>();
-  const [validateMode, setValidateMode] = useState<boolean>(false);
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEamil(e.target.value);
@@ -124,7 +123,7 @@ function SignUpModal() {
   const onSubmitSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setValidateMode(true);
+    dispatch(commonActions.setValidationMode(true));
 
     if (!email || !lastName || !firstName || !password) {
       return false;
@@ -157,7 +156,6 @@ function SignUpModal() {
           value={email}
           onChange={onChangeEmail}
           icon={<MailIcon />}
-          validateMode={validateMode}
           useValidation
           isValid={!!email}
           errorMessage="이메일이 필요합니다."
@@ -169,7 +167,6 @@ function SignUpModal() {
           value={lastName}
           onChange={onChangeLastName}
           icon={<PersonIcon />}
-          validateMode={validateMode}
           useValidation
           isValid={!!lastName}
           errorMessage="이름을 입력하세요."
@@ -181,7 +178,6 @@ function SignUpModal() {
           value={firstName}
           onChange={onChangeFirstName}
           icon={<PersonIcon />}
-          validateMode={validateMode}
           useValidation
           isValid={!!firstName}
           errorMessage="성을 입력하세요."
@@ -200,7 +196,6 @@ function SignUpModal() {
               <OpenedEyeIcon onClick={toggleHidePassword} />
             )
           }
-          validateMode={validateMode}
           useValidation
           isValid={!!password}
           errorMessage="비밀번호를 입력하세요"

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { useSelector } from '../../store';
 import palette from '../../styles/palette';
 
 type InputContainerProps = {
@@ -57,19 +58,19 @@ const Container = styled.div<InputContainerProps>`
 interface InputType extends React.InputHTMLAttributes<HTMLInputElement> {
   icon?: JSX.Element;
   isValid?: boolean;
-  validateMode: boolean;
   useValidation?: boolean;
   errorMessage?: string;
 }
 
 function Input({
   icon,
-  validateMode,
   isValid = false,
   useValidation = true,
   errorMessage,
   ...props
 }: InputType) {
+  const validateMode = useSelector(state => state.common.validateMode);
+
   return (
     <Container
       iconExist={!!icon}
