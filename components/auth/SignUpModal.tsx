@@ -15,6 +15,7 @@ import { signUpAPI } from '../../lib/api/auth';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../store/user';
 import { commonActions } from '../../store/common';
+import useValidateMode from '../../hooks/useValidateMode';
 
 const Container = styled.form`
   width: 568px;
@@ -78,6 +79,7 @@ const Container = styled.form`
 
 function SignUpModal() {
   const dispatch = useDispatch();
+  const { setValidateMode } = useValidateMode();
   const [email, setEamil] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
@@ -123,7 +125,7 @@ function SignUpModal() {
   const onSubmitSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(commonActions.setValidationMode(true));
+    setValidateMode(true);
 
     if (!email || !lastName || !firstName || !password) {
       return false;
