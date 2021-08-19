@@ -11,6 +11,7 @@ import Button from '../common/Button';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/auth';
 import { loginAPI } from '../../lib/api/auth';
+import { userActions } from '../../store/user';
 
 const Container = styled.form`
   width: 568px;
@@ -83,7 +84,7 @@ function LoginModal({ closeModal }: LoginModalType) {
       const loginBody = { email, password };
       try {
         const { data } = await loginAPI(loginBody);
-        console.log(await loginAPI(loginBody));
+        dispatch(userActions.setLoggedUser(data));
       } catch (e) {
         console.log(e);
       }
