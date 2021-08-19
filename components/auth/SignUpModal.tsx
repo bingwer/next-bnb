@@ -170,7 +170,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
     }
 
     if (
-      !isPasswordHasNameOrEmail ||
+      isPasswordHasNameOrEmail ||
       !isPasswordOverMinLength ||
       isPasswordHasNumberOrSymbol
     ) {
@@ -194,16 +194,17 @@ function SignUpModal({ closeModal }: SignUpModalType) {
     }
 
     if (validateSignUpForm()) {
+      const signUpBody = {
+        email,
+        lastName,
+        firstName,
+        password,
+        birthday: new Date(
+          `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
+        ).toISOString(),
+      };
+
       try {
-        const signUpBody = {
-          email,
-          lastName,
-          firstName,
-          password,
-          birthday: new Date(
-            `${birthYear}-${birthMonth!.replace('월', '')}-${birthDay}`,
-          ).toISOString(),
-        };
         const { data } = await signUpAPI(signUpBody);
         dispatch(userActions.setLoggedUser(data));
         closeModal();

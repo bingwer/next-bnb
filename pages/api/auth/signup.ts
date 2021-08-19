@@ -11,10 +11,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     if (!email || !firstName || !lastName || !password || !birthday) {
       res.statusCode = 400;
-      res.send('필수 데이터가 없습니다.');
+      return res.send('필수 데이터가 없습니다.');
     } else if (userExist) {
       res.statusCode = 409;
-      res.send('이미 가입된 이메일입니다.');
+      return res.send('이미 가입된 이메일입니다.');
     } else {
       const hashedPassword = bcrypt.hashSync(password, 8);
       const users = Data.user.getList();
@@ -37,14 +37,16 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
       Data.user.write([...users, newUser]);
 
-      const token = jwt.sign(String(newUser.id), process.env.JWT_SECRET!);
-
-      res.setHeader(
-        'Set-Cookie',
-        `access_token=${token}; path=/; expires=${new Date(
-          Date.now() + 60 * 60 * 24 * 1000 * 3,
-        ).toISOString()}; httponly`,
-      );
+      await new Promise(resolve => {
+        const token = jwt.sign(String(newUser.id), process.env.JWT_SECRET!);
+        res.setHeader(
+          'Set-Cookie',
+          `access_token=${token}; path=/; expires=${new Date(
+            Date.now() + 60 * 60 * 24 * 1000 * 3,
+          ).toISOString()}; httponly`,
+        );
+        resolve(token);
+      });
 
       const newUserWithoutPassword: Partial<Pick<StoredUserType, 'password'>> =
         newUser;
@@ -52,8 +54,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res.statusCode = 200;
       return res.send(newUser);
     }
-
-    return res.end();
   }
 
   res.statusCode = 405;
