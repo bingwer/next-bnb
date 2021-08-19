@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector } from '../../store';
+import LoginModal from './LoginModal';
 import SignUpModal from './SignUpModal';
 
 interface AuthModalProps {
@@ -11,7 +12,7 @@ function AuthModal({ closeModal }: AuthModalProps) {
   return (
     <>
       {authMode === 'signup' && <SignUpModal closeModal={closeModal} />}
-      {authMode === 'login' && <div>로그인</div>}
+      {authMode === 'login' && <LoginModal closeModal={closeModal} />}
     </>
   );
 }

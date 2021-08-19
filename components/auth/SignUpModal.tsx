@@ -17,6 +17,7 @@ import { userActions } from '../../store/user';
 import { commonActions } from '../../store/common';
 import useValidateMode from '../../hooks/useValidateMode';
 import PasswordWarning from './PasswordWarning';
+import { authActions } from '../../store/auth';
 
 const Container = styled.form`
   width: 568px;
@@ -102,7 +103,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
   const [birthMonth, setBirthMonth] = useState<string | undefined>();
   const [birthDay, setBirthDay] = useState<string | undefined>();
 
-  const [passwordFocused, setPasswordFocused] = useState<boolean>(true);
+  const [passwordFocused, setPasswordFocused] = useState<boolean>(false);
 
   const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEamil(e.target.value);
@@ -210,6 +211,10 @@ function SignUpModal({ closeModal }: SignUpModalType) {
         console.log(e);
       }
     }
+  };
+
+  const changeToLoginModal = () => {
+    dispatch(authActions.setAuthMode('login'));
   };
 
   useEffect(() => {
@@ -336,7 +341,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
         <span
           className="sign-up-modal-set-login"
           role="presentation"
-          onClick={() => {}}
+          onClick={changeToLoginModal}
         >
           로그인
         </span>

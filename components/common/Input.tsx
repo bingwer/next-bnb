@@ -30,6 +30,7 @@ const Container = styled.div<InputContainerProps>`
     position: absolute;
     right: 11px;
     height: 50px;
+    top: 16px;
   }
   .input-error-message {
     margin-top: 8px;
