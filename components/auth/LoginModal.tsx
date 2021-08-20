@@ -85,6 +85,7 @@ function LoginModal({ closeModal }: LoginModalType) {
       try {
         const { data } = await loginAPI(loginBody);
         dispatch(userActions.setLoggedUser(data));
+        closeModal();
       } catch (e) {
         console.log(e);
       }
