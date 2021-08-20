@@ -14,7 +14,6 @@ import Button from '../common/Button';
 import { signUpAPI } from '../../lib/api/auth';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../store/user';
-import { commonActions } from '../../store/common';
 import useValidateMode from '../../hooks/useValidateMode';
 import PasswordWarning from './PasswordWarning';
 import { authActions } from '../../store/auth';
@@ -86,7 +85,9 @@ const Container = styled.form`
 `;
 
 const PASSWORD_MIN_LENGTH = 8;
-
+const disabledMonths = ['월'];
+const disabledDays = ['일'];
+const disabledYears = ['년'];
 interface SignUpModalType {
   closeModal: () => void;
 }
@@ -306,7 +307,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
         <div className="sign-up-modal-birthday-month-selector">
           <Selector
             options={monthList}
-            disabledOptions={['월']}
+            disabledOptions={disabledMonths}
             defaultValue="월"
             value={birthMonth}
             onChange={onChangeBirthMonth}
@@ -316,7 +317,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
         <div className="sign-up-modal-birthday-day-selector">
           <Selector
             options={dayList}
-            disabledOptions={['일']}
+            disabledOptions={disabledDays}
             defaultValue="일"
             value={birthDay}
             onChange={onChangeBirthDay}
@@ -326,7 +327,7 @@ function SignUpModal({ closeModal }: SignUpModalType) {
         <div className="sign-up-modal-birthday-year-selector">
           <Selector
             options={yearList}
-            disabledOptions={['년']}
+            disabledOptions={disabledYears}
             defaultValue="년"
             value={birthYear}
             onChange={onChangeBirthYear}
