@@ -11,6 +11,8 @@ import { useSelector } from '../store';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../store/auth';
 import AuthModal from './auth/AuthModal';
+import { logoutAPI } from '../lib/api/auth';
+import { userActions } from '../store/user';
 
 const Container = styled.div`
   position: sticky;
@@ -122,6 +124,16 @@ function Header() {
   const [isUsermenuOpened, setIsUsermenuOpened] = useState(false);
   const user = useSelector(state => state.user);
 
+  const logout = async () => {
+    console.log(1);
+    try {
+      await logoutAPI();
+      dispatch(userActions.initUser());
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   return (
     <Container>
       <Link href="/">
@@ -174,27 +186,28 @@ function Header() {
               alt=""
             ></img>
           </button>
+          {isUsermenuOpened && (
+            <ul className="header-usermenu">
+              <li>숙소 관리</li>
+              <Link href="/room/register/building">
+                <a
+                  role="presentation"
+                  onClick={() => {
+                    setIsUsermenuOpened(false);
+                  }}
+                >
+                  <li>숙소 등록하기</li>
+                </a>
+              </Link>
+              <div className="header-usermenu-divider" />
+              <li role="presentation" onClick={logout}>
+                로그아웃
+              </li>
+            </ul>
+          )}
         </OutsideClickHandler>
       )}
-      {isUsermenuOpened && (
-        <ul className="header-usermenu">
-          <li>숙소 관리</li>
-          <Link href="/room/register/building">
-            <a
-              role="presentation"
-              onClick={() => {
-                setIsUsermenuOpened(false);
-              }}
-            >
-              <li>숙소 등록하기</li>
-            </a>
-          </Link>
-          <div className="header-usermenu-divider" />
-          <li role="presentation" onClick={() => {}}>
-            로그아웃
-          </li>
-        </ul>
-      )}
+
       <ModalPortal>
         <AuthModal closeModal={closeModal} />
       </ModalPortal>

@@ -14,3 +14,5 @@ export const signUpAPI = (body: SignUpAPIBody) =>
 
 export const loginAPI = (body: { email: string; password: string }) =>
   axios.post<UserType>('/api/auth/login', body);
+
+export const logoutAPI = () => axios.delete('/api/auth/logout');
