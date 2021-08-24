@@ -30,6 +30,10 @@ const Container = styled.div`
     max-width: 485px;
     margin-bottom: 50px;
   }
+
+  .register-room-is-setup-for-guest-radio {
+    margin-bottom: 50px;
+  }
 `;
 
 const disabledlargeBuildingTypeOptions = ['하나를 선택해 주세요.'];
@@ -55,6 +59,17 @@ const roomTypeRadioOptions = [
   },
 ];
 
+const isSetUpForGuestOptions = [
+  {
+    label: '예, 게스트용으로 따로 마련된 숙소입니다.',
+    value: true,
+  },
+  {
+    label: '아니오, 제 개인 물건이 숙소에 있습니다.',
+    value: false,
+  },
+];
+
 function RegisterRoomBuilding() {
   const dispatch = useDispatch();
   const largeBuildingType = useSelector(
@@ -62,6 +77,9 @@ function RegisterRoomBuilding() {
   );
   const buildingType = useSelector(state => state.registerRoom.buildingType);
   const roomType = useSelector(state => state.registerRoom.roomType);
+  const isSetUpForGuest = useSelector(
+    state => state.registerRoom.isSetUpForGuest,
+  );
 
   const detailBuildingOptions = useMemo(() => {
     switch (largeBuildingType) {
@@ -128,6 +146,10 @@ function RegisterRoomBuilding() {
     );
   };
 
+  const onChangeIsSetUpForGuest = (value: any) => {
+    dispatch(registerRoomActions.setIsSetUpForGuest(value));
+  };
+
   return (
     <Container>
       <h2>등록할 숙소 종류는 무엇인가요?</h2>
@@ -154,14 +176,24 @@ function RegisterRoomBuilding() {
         />
       </div>
       {buildingType && (
-        <div className="register-room-room-type-radio">
-          <RadioGroup
-            label="게스트가 묵게 될 숙소 유형을 골라주세요."
-            value={roomType}
-            options={roomTypeRadioOptions}
-            onChange={onChangeRoomType}
-          />
-        </div>
+        <>
+          <div className="register-room-room-type-radio">
+            <RadioGroup
+              label="게스트가 묵게 될 숙소 유형을 골라주세요."
+              value={roomType}
+              options={roomTypeRadioOptions}
+              onChange={onChangeRoomType}
+            />
+          </div>
+          <div className="register-room-is-setup-for-guest-radio">
+            <RadioGroup
+              label="게스트가 사용하도록 만들어진 숙소인가요?"
+              options={isSetUpForGuestOptions}
+              onChange={onChangeIsSetUpForGuest}
+              value={isSetUpForGuest}
+            />
+          </div>
+        </>
       )}
     </Container>
   );

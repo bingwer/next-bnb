@@ -36,6 +36,10 @@ const registerRoom = createSlice({
       state.roomType = action.payload;
       return state;
     },
+    setIsSetUpForGuest(state, action: PayloadAction<boolean>) {
+      state.isSetUpForGuest = action.payload;
+      return state;
+    },
   },
 });
 
