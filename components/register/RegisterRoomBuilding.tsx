@@ -151,12 +151,25 @@ function RegisterRoomBuilding() {
     dispatch(registerRoomActions.setIsSetUpForGuest(value));
   };
 
+  const isValid = useMemo(() => {
+    if (
+      !largeBuildingType ||
+      !buildingType ||
+      !roomType ||
+      !isSetUpForGuest === null
+    ) {
+      return false;
+    }
+    return true;
+  }, [largeBuildingType, buildingType, roomType, isSetUpForGuest]);
+
   return (
     <Container>
       <h2>등록할 숙소 종류는 무엇인가요?</h2>
       <h3>1단계</h3>
       <div className="register-room-building-selector-wrapper">
         <Selector
+          isValid={!!largeBuildingType}
           type="register"
           value={largeBuildingType || undefined}
           defaultValue="하나를 선택해 주세요."
@@ -168,6 +181,7 @@ function RegisterRoomBuilding() {
       </div>
       <div className="register-room-building-selector-wrapper">
         <Selector
+          isValid={!!buildingType}
           type="register"
           value={buildingType || undefined}
           disabled={!largeBuildingType}
@@ -180,6 +194,7 @@ function RegisterRoomBuilding() {
         <>
           <div className="register-room-room-type-radio">
             <RadioGroup
+              isValid={!!roomType}
               label="게스트가 묵게 될 숙소 유형을 골라주세요."
               value={roomType}
               options={roomTypeRadioOptions}
@@ -188,6 +203,7 @@ function RegisterRoomBuilding() {
           </div>
           <div className="register-room-is-setup-for-guest-radio">
             <RadioGroup
+              isValid={isSetUpForGuest !== null}
               label="게스트가 사용하도록 만들어진 숙소인가요?"
               options={isSetUpForGuestOptions}
               onChange={onChangeIsSetUpForGuest}
@@ -197,7 +213,7 @@ function RegisterRoomBuilding() {
         </>
       )}
       <RegisterRoomFooter
-        isValid={false}
+        isValid={isValid}
         prevHref="/"
         nextHref="/room/register/bedrooms"
       />

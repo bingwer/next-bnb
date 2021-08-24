@@ -144,7 +144,7 @@ function RadioGroup({
           ),
         )}
       </div>
-      {validateMode && !!isValid && (
+      {validateMode && !isValid && (
         <div className="radio-group-warning">
           <WarningIcon />
           <p>{errorMessage}</p>
