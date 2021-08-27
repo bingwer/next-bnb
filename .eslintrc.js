@@ -39,6 +39,7 @@ module.exports = {
     'react/require-default-props': 'off',
     'jsx-a11y/label-has-for': 'off',
     'jsx-a11y/label-has-associated-control': 'off',
+    'import/prefer-default-export': 'off', //export default 권장
     'import/extensions': [
       'error',
       'ignorePackages',
