@@ -154,4 +154,4 @@ function RadioGroup({
   );
 }
 
-export default RadioGroup;
+export default React.memo(RadioGroup);
