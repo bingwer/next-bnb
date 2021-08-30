@@ -9,6 +9,7 @@ import palette from '../../styles/palette';
 import Counter from '../common/Counter';
 import Selector from '../common/Selector';
 import RegisterRoomBedList from './RegisterRoomBedList';
+import RegisterRoomFooter from './RegisterRoomFooter';
 
 const Container = styled.div`
   padding: 62px 30px 100px;
@@ -128,6 +129,7 @@ function RegisterRoomBedRooms() {
           value={`침실 ${bedroomCount}개`}
           onChange={onChangeBedroomCount}
           label="게스트가 사용할 수 있는 침실은 몇개인가요?"
+          isValid={!!bedroomCount}
           options={bedroomCountList}
         />
       </div>
@@ -142,6 +144,11 @@ function RegisterRoomBedRooms() {
       <div className="register-room-bed-type-list-wrapper">
         <RegisterRoomBedList />
       </div>
+      <RegisterRoomFooter
+        prevHref="/room/register/building"
+        nextHref="/room/register/bathroom"
+        isValid={!!bedroomCount}
+      />
     </Container>
   );
 }

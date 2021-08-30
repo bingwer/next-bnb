@@ -1,6 +1,4 @@
-import React from 'react';
-import { useMemo } from 'react';
-import { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { bedTypes } from '../../lib/staticData';
