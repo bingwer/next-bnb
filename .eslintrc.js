@@ -25,7 +25,6 @@ module.exports = {
       },
     ],
     'spaced-comment': 'off', // 주석을 뒤에 쓸 수 있다.
-    'no-unused-vars': 'off', // 사용 안한 변수 중복 제거
     'global-require': 'off', // 함수 내에서 require 사용 가능
     'arrow-body-style': 'off', // 화살표 함수 안에 return을 사용할 수 있다.
     'react/no-unescaped-entities': 'off', // 문자열 내에서 " ' > } 허용

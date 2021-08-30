@@ -6,10 +6,9 @@ import { getNumberfromString } from '../../lib/utils';
 import { useSelector } from '../../store';
 import { registerRoomActions } from '../../store/registerRoom';
 import palette from '../../styles/palette';
-import Button from '../common/Button';
 import Counter from '../common/Counter';
 import Selector from '../common/Selector';
-import RegisterRoomBedTypes from './RegisterRoomBedTypes';
+import RegisterRoomBedList from './RegisterRoomBedList';
 
 const Container = styled.div`
   padding: 62px 30px 100px;
@@ -92,7 +91,6 @@ function RegisterRoomBedRooms() {
   );
   const bedroomCount = useSelector(state => state.registerRoom.bedroomCount);
   const bedCount = useSelector(state => state.registerRoom.bedCount);
-  const bedList = useSelector(state => state.registerRoom.bedList);
 
   const onChangeMaximumGuestCount = (value: number) => {
     dispatch(registerRoomActions.setMaximumGuestCount(value));
@@ -142,9 +140,7 @@ function RegisterRoomBedRooms() {
         게스트가 잘 파악할 수 있습니다.
       </p>
       <div className="register-room-bed-type-list-wrapper">
-        {bedList.map(bedroom => (
-          <RegisterRoomBedTypes bedroom={bedroom} key={bedroom.id} />
-        ))}
+        <RegisterRoomBedList />
       </div>
     </Container>
   );
