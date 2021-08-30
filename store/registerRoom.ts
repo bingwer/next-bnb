@@ -11,6 +11,8 @@ type RegisterRoomState = {
   bedCount: number;
   bedList: { id: number; beds: { type: BedType; count: number }[] }[];
   publicBedList: { type: BedType; count: number }[];
+  bathroomCount: number;
+  bathroomType: 'private' | 'public' | null;
 };
 
 const initialState: RegisterRoomState = {
@@ -23,6 +25,8 @@ const initialState: RegisterRoomState = {
   bedCount: 1,
   bedList: [],
   publicBedList: [],
+  bathroomCount: 1,
+  bathroomType: null,
 };
 
 const registerRoom = createSlice({
@@ -116,6 +120,12 @@ const registerRoom = createSlice({
         state.publicBedList[index].count = count;
       }
       return state;
+    },
+    setBathroomCount(state, action: PayloadAction<number>) {
+      state.bathroomCount = action.payload;
+    },
+    setBathroomType(state, action: PayloadAction<'private' | 'public'>) {
+      state.bathroomType = action.payload;
     },
   },
 });
